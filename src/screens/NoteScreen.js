@@ -9,6 +9,6 @@ const NoteScreen = () => {
   );
 };
 
-const syles = StyleSheet.create({}); 
+const styles = StyleSheet.create({}); 
 
 export default NoteScreen;
