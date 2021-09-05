@@ -10,9 +10,15 @@ const authReducer = (state, action) => {
       return {...state, errorMessage: action.payload};
     case 'signin':
       return {errorMessage: '', token: action.payload};
+    case 'clear_error_message':
+      return {...state, errorMessage: ''};
     default:
       return state;
   }
+};
+
+const clearErrorMessage = dispatch => () => {
+  dispatch({type: 'clear_error_message'});
 };
 
 // eslint-disable-next-line prettier/prettier
@@ -65,6 +71,6 @@ const signup = dispatch => async ({ email, password }) => {
 
 export const {Provider, Context} = createDataContext(
   authReducer,
-  {signup, signin},
+  {signup, signin, clearErrorMessage},
   {token: null, errorMessage: ''},
 );

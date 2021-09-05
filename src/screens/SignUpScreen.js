@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthForm from '../components/AuthForm';
@@ -7,7 +7,16 @@ import {Context as AuthContext} from '../context/AuthContext';
 import EasyButton from '../components/EasyButton';
 
 const SignUpScreen = ({navigation}) => {
-  const {state, signup} = useContext(AuthContext);
+  const {state, signup, clearErrorMessage} = useContext(AuthContext);
+  
+  // when the screen goes out of focus, error message will hide
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      clearErrorMessage();
+    });
+    return unsubscribe;
+  }, []);
+
 
   return (
     <KeyboardAwareScrollView>
