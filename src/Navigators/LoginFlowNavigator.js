@@ -9,8 +9,20 @@ const Stack = createStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Sing In" component={SignInScreen} />
-      <Stack.Screen name="Sing Up" component={SignUpScreen} />
+      <Stack.Screen
+        name="Sing In"
+        component={SignInScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Sing Up"
+        component={SignUpScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }

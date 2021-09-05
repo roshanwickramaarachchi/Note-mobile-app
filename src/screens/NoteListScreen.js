@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Button} from 'react-native';
 
-const NoteListScreen = () => {
+const NoteListScreen = ({navigation}) => {
   return (
     <View>
       <Text>NoteListScreen</Text>
+      <Button title="button" onPress={() => navigation.navigate('Note')} />
     </View>
   );
 };
