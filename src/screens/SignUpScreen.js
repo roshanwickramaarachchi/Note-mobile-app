@@ -1,16 +1,10 @@
-import React, {useState, useContext} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Button,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthForm from '../components/AuthForm';
 var {width} = Dimensions.get('window');
 import {Context as AuthContext} from '../context/AuthContext';
+import EasyButton from '../components/EasyButton';
 
 const SignUpScreen = ({navigation}) => {
   const {state, signup} = useContext(AuthContext);
@@ -24,6 +18,15 @@ const SignUpScreen = ({navigation}) => {
           submitButtonText="Sign Up"
           onSubmit={signup}
         />
+
+        <View>
+          <EasyButton
+            large
+            secondary
+            onPress={() => navigation.navigate('Sing In')}>
+            <Text style={{color: 'white'}}>Back to signin</Text>
+          </EasyButton>
+        </View>
       </ScrollView>
     </KeyboardAwareScrollView>
   );
