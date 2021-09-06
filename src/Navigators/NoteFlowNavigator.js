@@ -9,8 +9,14 @@ const Stack = createStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Note List" component={NoteListScreen} />
+    <Stack.Navigator initialRouteName="NoteList">
+      <Stack.Screen
+        name="NoteList"
+        component={NoteListScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="Note" component={NoteScreen} />
       <Stack.Screen name="Note Edit" component={NoteEditScreen} />
     </Stack.Navigator>
