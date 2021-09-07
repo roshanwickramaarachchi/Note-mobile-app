@@ -16,6 +16,10 @@ const noteReducer = (state, action) => {
         notesData: state.notesData.filter(note => note._id !== action.payload),
         isLoading: false,
       };
+    case 'create_note':
+      return {errorMessage: '', isLoading: false};
+    case 'is_loading':
+      return {...state, isLoading: true};
     default:
       return state;
   }
@@ -23,6 +27,7 @@ const noteReducer = (state, action) => {
 //get all notes login user
 const getNotes = dispatch => async () => {
   try {
+    dispatch({type: 'is_loading'});
     var token = await AsyncStorage.getItem('token');
     const responseUser = await axios({
       method: 'get',
@@ -58,8 +63,9 @@ const getNotes = dispatch => async () => {
 //delte a note
 const deleteNote = dispatch => async id => {
   try {
+    dispatch({type: 'is_loading'});
     var token = await AsyncStorage.getItem('token');
-    const response = await axios({
+    await axios({
       method: 'delete',
       url: `${BASE_URL}/api/v1/notes/${id}`,
       headers: {
@@ -80,10 +86,37 @@ const deleteNote = dispatch => async id => {
   }
 };
 
-
+//create a note
+// eslint-disable-next-line prettier/prettier
+const createNote = dispatch => async ({name, content}) => {
+    try {
+      dispatch({type: 'is_loading'});
+      var token = await AsyncStorage.getItem('token');
+      await axios({
+        method: 'post',
+        url: `${BASE_URL}/api/v1/notes`,
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        data: {
+          name,
+          content,
+        },
+      });
+      RootNavigation.navigate('Note List');
+    } catch (err) {
+      dispatch({
+        type: 'add_error',
+        payload: 'Something went wrong with create a note',
+      });
+      console.log('create a note error: ', err);
+    }
+  };
 
 export const {Provider, Context} = createDataContext(
   noteReducer,
-  {getNotes, deleteNote},
+  {getNotes, deleteNote, createNote},
   {notesData: [], errorMessage: '', isLoading: true},
 );
