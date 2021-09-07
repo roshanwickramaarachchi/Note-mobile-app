@@ -7,13 +7,20 @@ import Spinner from 'react-native-loading-spinner-overlay';
 var {width} = Dimensions.get('window');
 
 const NoteListScreen = ({navigation}) => {
-  const {state, getNotes, deleteNote} = useContext(Context);
+  const {state, getNotes, deleteNote, clearErrorMessage} = useContext(Context);
+
+  // when the screen goes out of focus, error message will hide
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      clearErrorMessage();
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     const listener = navigation.addListener('focus', () => {
       getNotes();
     });
-
     return listener;
   }, [navigation]);
 

@@ -8,6 +8,8 @@ const noteReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
       return {...state, errorMessage: action.payload, isLoading: false};
+    case 'clear_error_message':
+      return {...state, errorMessage: ''};
     case 'get_notes':
       return {errorMessage: '', notesData: action.payload, isLoading: false};
     case 'delete_note':
@@ -26,6 +28,12 @@ const noteReducer = (state, action) => {
       return state;
   }
 };
+
+//error message clean
+const clearErrorMessage = dispatch => () => {
+  dispatch({type: 'clear_error_message'});
+};
+
 //get all notes login user
 const getNotes = dispatch => async () => {
   try {
@@ -150,6 +158,6 @@ const updateNote = dispatch => async ({noteId,name, content}) => {
 
 export const {Provider, Context} = createDataContext(
   noteReducer,
-  {getNotes, deleteNote, createNote, updateNote},
+  {getNotes, deleteNote, createNote, updateNote, clearErrorMessage},
   {notesData: [], errorMessage: '', isLoading: true},
 );

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Context} from '../context/NoteContext';
@@ -7,10 +7,17 @@ import NoteForm from '../components/NoteForm';
 var {width} = Dimensions.get('window');
 
 const NoteScreen = props => {
-  const {state, updateNote} = useContext(Context);
+  const {state, updateNote, clearErrorMessage} = useContext(Context);
 
-  const noteData = props.route.params.item;
-  console.log(noteData);  
+  const noteData = props.route.params.item; 
+
+  // when the screen goes out of focus, error message will hide
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('blur', () => {
+      clearErrorMessage();
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <KeyboardAwareScrollView>

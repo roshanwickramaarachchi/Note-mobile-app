@@ -3,13 +3,7 @@ import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
 
-const NoteForm = ({
-  headerText,
-  onSubmit,
-  onUpdate,
-  errorMessage,
-  noteData,
-}) => {
+const NoteForm = ({headerText, onSubmit, onUpdate, errorMessage, noteData}) => {
   const [name, setName] = useState(noteData.name);
   const [content, setContent] = useState(noteData.content);
   const [noteId, setNoteId] = useState(noteData._id);
