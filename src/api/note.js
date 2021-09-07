@@ -1,3 +1,3 @@
-const BASE_URL = 'https://weak-horse-99.loca.lt';
+const BASE_URL = 'https://friendly-owl-96.loca.lt';
 
 export {BASE_URL};

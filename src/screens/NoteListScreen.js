@@ -3,12 +3,11 @@ import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
 import {Context} from '../context/NoteContext';
 import {ListItem, Avatar, Icon} from 'react-native-elements';
 import Error from '../components/Error';
-
-
+import Spinner from 'react-native-loading-spinner-overlay';
 var {width} = Dimensions.get('window');
 
 const NoteListScreen = ({navigation}) => {
-  const {state, getNotes} = useContext(Context);
+  const {state, getNotes, deleteNote} = useContext(Context);
 
   useEffect(() => {
     const listener = navigation.addListener('focus', () => {
@@ -20,6 +19,7 @@ const NoteListScreen = ({navigation}) => {
 
   return (
     <>
+      <Spinner visible={state.isLoading} />
       {/* header title */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleStyle}>Note List</Text>
@@ -40,7 +40,13 @@ const NoteListScreen = ({navigation}) => {
               <ListItem.Title>{item.name}</ListItem.Title>
               <ListItem.Subtitle>{item.createdAt}</ListItem.Subtitle>
             </ListItem.Content>
-            <Icon name="delete" onPress={() => console.log('pressed')} />
+            <Icon
+              name="delete"
+              onPress={() => {
+                deleteNote(item._id);
+                getNotes();
+              }}
+            />
           </ListItem>
         ))}
       </ScrollView> 
