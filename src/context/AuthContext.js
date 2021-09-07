@@ -7,13 +7,15 @@ import * as RootNavigation from '../RootNavigation';
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'add_error':
-      return {...state, errorMessage: action.payload};
+      return {...state, errorMessage: action.payload, isLoading: false};
     case 'signin':
-      return {errorMessage: '', token: action.payload};
+      return {errorMessage: '', token: action.payload, isLoading: false};
     case 'clear_error_message':
       return {...state, errorMessage: ''};
     case 'signout':
-      return {token: null, errorMessage: ''};
+      return {token: null, errorMessage: '', isLoading: false};
+    case 'is_loading':
+      return {...state, isLoading: true};
     default:
       return state;
   }
@@ -37,6 +39,7 @@ const clearErrorMessage = dispatch => () => {
 // eslint-disable-next-line prettier/prettier
 const signup = dispatch => async ({ email, password }) => {
     try {
+      dispatch({type: 'is_loading'});
       const response = await axios({
         method: 'post',
         url: `${BASE_URL}/api/v1/auth/register`,
@@ -61,6 +64,7 @@ const signup = dispatch => async ({ email, password }) => {
 // eslint-disable-next-line prettier/prettier
   const signin = dispatch => async ({ email, password }) => {
     try {
+      dispatch({type: 'is_loading'});
       const response = await axios({
         method: 'post',
         url: `${BASE_URL}/api/v1/auth/login`,
@@ -83,13 +87,22 @@ const signup = dispatch => async ({ email, password }) => {
   };
 //romove token from async storage
 const signout = dispatch => async () => {
-  await AsyncStorage.removeItem('token');
-  dispatch({type: 'signout'});
-  RootNavigation.navigate('Login Flow');
+  try {
+    dispatch({type: 'is_loading'});
+    await AsyncStorage.removeItem('token');
+    dispatch({type: 'signout'});
+    RootNavigation.navigate('Login Flow');
+  } catch (err) {
+    dispatch({
+      type: 'add_error',
+      payload: 'Something went wrong with sign out',
+    });
+    console.log('sign out error: ', err);
+  }
 };
 
 export const {Provider, Context} = createDataContext(
   authReducer,
   {signup, signin, signout, clearErrorMessage, tryLocalSignin},
-  {token: null, errorMessage: ''},
+  {token: null, errorMessage: '', isLoading: false},
 );

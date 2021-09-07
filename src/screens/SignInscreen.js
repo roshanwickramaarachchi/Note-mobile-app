@@ -4,6 +4,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthForm from '../components/AuthForm';
 import {Context as AuthContext} from '../context/AuthContext';
 import EasyButton from '../components/EasyButton';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 var {width} = Dimensions.get('window');
 
@@ -20,6 +21,7 @@ const SignInScreen = ({navigation}) => {
 
   return (
     <KeyboardAwareScrollView>
+      <Spinner visible={state.isLoading} />
       <ScrollView contentContainerStyle={styles.container}>
         <AuthForm
           headerText="Sign In "
