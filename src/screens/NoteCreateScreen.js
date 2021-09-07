@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Context} from '../context/NoteContext';
 import Spinner from 'react-native-loading-spinner-overlay';

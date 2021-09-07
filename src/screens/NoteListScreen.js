@@ -34,7 +34,7 @@ const NoteListScreen = ({navigation}) => {
           <ListItem
             key={item._id}
             bottomDivider
-            onPress={() => console.log('pressed')}>
+            onPress={() => navigation.navigate('Note', {item})}>
             <Avatar source={require('../assets/image.png')} />
             <ListItem.Content>
               <ListItem.Title>{item.name}</ListItem.Title>
@@ -49,7 +49,7 @@ const NoteListScreen = ({navigation}) => {
             />
           </ListItem>
         ))}
-      </ScrollView> 
+      </ScrollView>
     </>
   );
 };

@@ -17,7 +17,13 @@ function MyStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Note" component={NoteScreen} />
+      <Stack.Screen
+        name="Note"
+        component={NoteScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="Note Edit" component={NoteEditScreen} />
     </Stack.Navigator>
   );

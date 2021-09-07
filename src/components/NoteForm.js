@@ -3,9 +3,16 @@ import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
 
-const NoteForm = ({headerText, onSubmit, errorMessage, initialValues}) => {
-  const [name, setName] = useState(initialValues.name);
-  const [content, setContent] = useState(initialValues.content);
+const NoteForm = ({
+  headerText,
+  onSubmit,
+  onUpdate,
+  errorMessage,
+  noteData,
+}) => {
+  const [name, setName] = useState(noteData.name);
+  const [content, setContent] = useState(noteData.content);
+  const [noteId, setNoteId] = useState(noteData._id);
 
   return (
     <>
@@ -29,18 +36,28 @@ const NoteForm = ({headerText, onSubmit, errorMessage, initialValues}) => {
         textAlignVertical="top"
       />
 
-      {/* sign up and sign in button */}
-      <View>
-        <EasyButton large primary onPress={() => onSubmit({name, content})}>
-          <Text style={{color: 'white'}}>Save</Text>
-        </EasyButton>
-      </View>
+      {onSubmit ? (
+        <View>
+          <EasyButton large primary onPress={() => onSubmit({name, content})}>
+            <Text style={{color: 'white'}}>Save</Text>
+          </EasyButton>
+        </View>
+      ) : (
+        <View>
+          <EasyButton
+            large
+            primary
+            onPress={() => onUpdate({noteId, name, content})}>
+            <Text style={{color: 'white'}}>Save</Text>
+          </EasyButton>
+        </View>
+      )}
     </>
   );
 };
 
 NoteForm.defaultProps = {
-  initialValues: {
+  noteData: {
     name: '',
     content: '',
   },
@@ -66,7 +83,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 2,
     borderColor: 'orange',
-  },  
+  },
   title: {
     fontSize: 30,
   },

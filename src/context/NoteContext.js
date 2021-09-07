@@ -17,7 +17,9 @@ const noteReducer = (state, action) => {
         isLoading: false,
       };
     case 'create_note':
-      return {errorMessage: '', isLoading: false};
+      return {...state, errorMessage: '', isLoading: false};
+    case 'update_note':
+      return {...state, errorMessage: '', isLoading: false};
     case 'is_loading':
       return {...state, isLoading: true};
     default:
@@ -105,6 +107,7 @@ const createNote = dispatch => async ({name, content}) => {
           content,
         },
       });
+      dispatch({type: 'create_note'});
       RootNavigation.navigate('Note List');
     } catch (err) {
       dispatch({
@@ -115,8 +118,38 @@ const createNote = dispatch => async ({name, content}) => {
     }
   };
 
+//update a note
+// eslint-disable-next-line prettier/prettier
+const updateNote = dispatch => async ({noteId,name, content}) => {
+    try {
+      dispatch({type: 'is_loading'});
+      var token = await AsyncStorage.getItem('token');
+      await axios({
+        method: 'put',
+        url: `${BASE_URL}/api/v1/notes/${noteId}`,
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        data: {
+          name,
+          content,
+        },
+      });
+      dispatch({type: 'update_note'});
+      RootNavigation.navigate('NoteList');
+    } catch (err) {
+      dispatch({
+        type: 'add_error',
+        payload: 'Something went wrong with update a note',
+      });
+      console.log('updat a note error: ', err);
+    }
+  };
+
 export const {Provider, Context} = createDataContext(
   noteReducer,
-  {getNotes, deleteNote, createNote},
+  {getNotes, deleteNote, createNote, updateNote},
   {notesData: [], errorMessage: '', isLoading: true},
 );
