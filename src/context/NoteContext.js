@@ -9,19 +9,37 @@ const noteReducer = (state, action) => {
     case 'add_error':
       return {...state, errorMessage: action.payload};
     case 'get_notes':
-      return action.payload;
+      return {errorMessage: '', notesData: action.payload};
+    //   return action.payload;
     default:
       return state;
   }
 };
-
+//get all notes login user
 const getNotes = dispatch => async () => {
   try {
+    var token = await AsyncStorage.getItem('token');
+    const responseUser = await axios({
+      method: 'get',
+      url: `${BASE_URL}/api/v1/auth/me`,
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    //console.log(responseUser.data.data._id)
+    const logUserId = responseUser.data.data._id;
+
     const response = await axios({
       method: 'get',
-      url: `${BASE_URL}/api/v1/notes`,
+      url: `${BASE_URL}/api/v1/notes?user=${logUserId}`,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     });
-    //console.log(response.data);
+    console.log(response.data.data);
     dispatch({type: 'get_notes', payload: response.data.data});
   } catch (err) {
     dispatch({
@@ -35,5 +53,5 @@ const getNotes = dispatch => async () => {
 export const {Provider, Context} = createDataContext(
   noteReducer,
   {getNotes},
-  [],
+  {notesData: [], errorMessage: ''},
 );

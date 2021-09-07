@@ -1,14 +1,14 @@
 import React, {useContext, useEffect} from 'react';
 import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
 import {Context} from '../context/NoteContext';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-import {ListItem, Avatar, Icon, Button } from 'react-native-elements';
+import {ListItem, Avatar, Icon} from 'react-native-elements';
+import Error from '../components/Error';
+
 
 var {width} = Dimensions.get('window');
 
 const NoteListScreen = ({navigation}) => {
   const {state, getNotes} = useContext(Context);
-  console.log(state);
 
   useEffect(() => {
     const listener = navigation.addListener('focus', () => {
@@ -25,8 +25,12 @@ const NoteListScreen = ({navigation}) => {
         <Text style={styles.titleStyle}>Note List</Text>
       </View>
 
+      {/* error message */}
+      {state.errorMessage ? <Error message={state.errorMessage} /> : null}
+
+      {/* note list */}
       <ScrollView>
-        {state.map(item => (
+        {state.notesData.map(item => (
           <ListItem
             key={item._id}
             bottomDivider
@@ -39,7 +43,7 @@ const NoteListScreen = ({navigation}) => {
             <Icon name="delete" onPress={() => console.log('pressed')} />
           </ListItem>
         ))}
-      </ScrollView>
+      </ScrollView> 
     </>
   );
 };
