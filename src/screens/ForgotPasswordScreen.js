@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, Dimensions , Button} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Context as AuthContext} from '../context/AuthContext';
 import Input from '../components/Input';
@@ -43,6 +43,7 @@ const ForgotPasswordScreen = ({navigation}) => {
             <Text style={{color: 'white'}}>Send</Text>
           </EasyButton>
         </View>
+
       </View>
     </KeyboardAwareScrollView>
   );

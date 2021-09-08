@@ -9,16 +9,69 @@ import Error from '../components/Error';
 
 var {width} = Dimensions.get('window');
 
-const PasswordResetScreen = () => {
+const PasswordResetScreen = ({navigation}) => {
   const {state, resetPassword, clearErrorMessage} = useContext(AuthContext);
 
+  const [password, setPassword] = useState('');
+  const [secretKey, setSecretKey] = useState('');
+
+  // when the screen goes out of focus, error message will hide
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      clearErrorMessage();
+    });
+    return unsubscribe;
+  }, []);
+
   return (
-    <View>
-      <Text>PasswordResetScreen</Text>
-    </View>
+    <KeyboardAwareScrollView>
+      <Spinner visible={state.isLoading} />
+
+      <View style={styles.container}>
+        <Text style={styles.title}>Password Reset Screen</Text>
+
+        {state.errorMessage ? <Error message={state.errorMessage} /> : null}
+
+        <Text>Please check your emails </Text>
+
+        <Input
+          placeholder={'Enter Secret Key'}
+          value={secretKey}
+          onChangeText={setSecretKey}
+          autoCorrect={false}
+        />
+
+        <Input
+          placeholder={'Enter New Password'}
+          value={password}
+          onChangeText={setPassword}
+          autoCorrect={false}
+        />
+
+        <View>
+          <EasyButton
+            large
+            primary
+            onPress={() => resetPassword({secretKey, password})}>
+            <Text style={{color: 'white'}}>Reset Password</Text>
+          </EasyButton>
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
-const syles = StyleSheet.create({}); 
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 30,
+    // marginBottom: 300,
+    width: width,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 30,
+  },
+});
 
 export default PasswordResetScreen;

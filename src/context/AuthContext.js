@@ -17,10 +17,9 @@ const authReducer = (state, action) => {
     case 'is_loading':
       return {...state, isLoading: true};
     case 'forgot_password':
-      return {
-        errorMessage: '',
-        isLoading: false,
-      };
+      return {errorMessage: '', isLoading: false};
+    case 'reset_password':
+      return {errorMessage: '', isLoading: false};
     default:
       return state;
   }
@@ -133,8 +132,43 @@ const forgotPassword = dispatch => async ({ email }) => {
     }
   };
 
+// eslint-disable-next-line prettier/prettier
+const resetPassword = dispatch => async ({ secretKey, password }) => {
+    try {
+      dispatch({type: 'is_loading'});
+      await axios({
+        method: 'put',
+        url: `${BASE_URL}/api/v1/auth/resetPassword/${secretKey}`,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        data: {
+          password,
+        },
+      });
+      dispatch({type: 'forgot_password'});
+
+      RootNavigation.navigate('Sing In');
+    } catch (err) {
+      dispatch({
+        type: 'add_error',
+        payload: 'Something went wrong with reset password',
+      });
+      console.log('reset password error: ', err);
+    }
+  };
+
 export const {Provider, Context} = createDataContext(
   authReducer,
-  {signup, signin, signout, clearErrorMessage, tryLocalSignin, forgotPassword},
+  {
+    signup,
+    signin,
+    signout,
+    clearErrorMessage,
+    tryLocalSignin,
+    forgotPassword,
+    resetPassword,
+  },
   {token: null, errorMessage: '', isLoading: false, message: ''},
 );
