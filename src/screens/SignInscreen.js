@@ -5,6 +5,7 @@ import AuthForm from '../components/AuthForm';
 import {Context as AuthContext} from '../context/AuthContext';
 import EasyButton from '../components/EasyButton';
 import Spinner from 'react-native-loading-spinner-overlay';
+import NavLink from '../components/NavLink';
 
 var {width} = Dimensions.get('window');
 
@@ -37,6 +38,8 @@ const SignInScreen = ({navigation}) => {
             onPress={() => navigation.navigate('Sing Up')}>
             <Text style={{color: 'white'}}>Back to sign up</Text>
           </EasyButton>
+
+          <NavLink routeName="Forgot Password" />
         </View>
       </ScrollView>
     </KeyboardAwareScrollView>
