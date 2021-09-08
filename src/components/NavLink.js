@@ -2,11 +2,11 @@ import React from 'react';
 import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
 import * as RootNavigation from '../RootNavigation';
 
-const NavLink = ({routeName}) => {
+const NavLink = ({routeName, text}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => RootNavigation.navigate(routeName)}>
-        <Text style={styles.link}>Forgot Password</Text>
+        <Text style={styles.link}>{text}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -15,7 +15,7 @@ const NavLink = ({routeName}) => {
 const styles = StyleSheet.create({
   link: {
     color: 'blue',
-    fontSize: 20,
+    fontSize: 15,
   },
   container: {
     marginTop: 30,

@@ -20,6 +20,8 @@ const authReducer = (state, action) => {
       return {errorMessage: '', isLoading: false};
     case 'reset_password':
       return {errorMessage: '', isLoading: false};
+    case 'change_password':
+      return {errorMessage: '', isLoading: false};
     default:
       return state;
   }
@@ -159,6 +161,36 @@ const resetPassword = dispatch => async ({ secretKey, password }) => {
     }
   };
 
+// eslint-disable-next-line prettier/prettier
+const changePassword = dispatch => async ({ currentPassword, newPassword }) => {
+    try {
+      dispatch({type: 'is_loading'});
+      var token = await AsyncStorage.getItem('token');
+      await axios({
+        method: 'put',
+        url: `${BASE_URL}/api/v1/auth/updatePassword`,
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        data: {
+          currentPassword,
+          newPassword,
+        },
+      });
+      dispatch({type: 'change_password'});
+
+      RootNavigation.navigate('AccountScreen');
+    } catch (err) {
+      dispatch({
+        type: 'add_error',
+        payload: 'Something went wrong with change password',
+      });
+      console.log('change password error: ', err);
+    }
+  };
+
 export const {Provider, Context} = createDataContext(
   authReducer,
   {
@@ -169,6 +201,7 @@ export const {Provider, Context} = createDataContext(
     tryLocalSignin,
     forgotPassword,
     resetPassword,
+    changePassword,
   },
   {token: null, errorMessage: '', isLoading: false, message: ''},
 );

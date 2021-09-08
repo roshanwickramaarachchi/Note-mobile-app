@@ -39,7 +39,7 @@ const SignInScreen = ({navigation}) => {
             <Text style={{color: 'white'}}>Back to sign up</Text>
           </EasyButton>
 
-          <NavLink routeName="Forgot Password" />
+          <NavLink routeName="Forgot Password" text="Forgot password" />
         </View>
       </ScrollView>
     </KeyboardAwareScrollView>

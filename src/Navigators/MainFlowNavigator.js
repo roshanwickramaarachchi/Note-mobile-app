@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import NoteFlowNavigator from './NoteFlowNavigator';
 import NoteCreateScreen from '../screens/NoteCreateScreen';
-import AccountScreen from '../screens/AccountScreen';
+import AccountFlowNavigator from './AccountFlowNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +35,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Account"
-        component={AccountScreen}
+        component={AccountFlowNavigator}
         options={{
           tabBarIcon: () => <Icon name="user" color="orange" size={30} />,
         }}
