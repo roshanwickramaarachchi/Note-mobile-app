@@ -10,8 +10,7 @@ import Error from '../components/Error';
 var {width} = Dimensions.get('window');
 
 const ForgotPasswordScreen = ({navigation}) => {
-  const {state, forgotPassword, clearErrorMessage, message} =
-    useContext(AuthContext);
+  const {state, forgotPassword, clearErrorMessage} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
 
@@ -24,7 +23,7 @@ const ForgotPasswordScreen = ({navigation}) => {
   }, []);
 
   return (
-    <>
+    <KeyboardAwareScrollView>
       <Spinner visible={state.isLoading} />
 
       <View style={styles.container}>
@@ -45,7 +44,7 @@ const ForgotPasswordScreen = ({navigation}) => {
           </EasyButton>
         </View>
       </View>
-    </>
+    </KeyboardAwareScrollView>
   );
 };
 

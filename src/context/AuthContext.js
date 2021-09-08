@@ -110,7 +110,7 @@ const signout = dispatch => async () => {
 const forgotPassword = dispatch => async ({ email }) => {
     try {
       dispatch({type: 'is_loading'});
-      const response = await axios({
+      await axios({
         method: 'post',
         url: `${BASE_URL}/api/v1/auth/forgotPassword`,
         headers: {
