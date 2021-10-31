@@ -27,6 +27,7 @@ const SignUpScreen = ({navigation}) => {
           errorMessage={state.errorMessage}
           submitButtonText="Sign Up"
           onSubmit={signup}
+          message={state.message}
         />
 
         <View>

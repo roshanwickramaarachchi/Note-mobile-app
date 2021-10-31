@@ -3,7 +3,7 @@ import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
 
-const AuthForm = ({headerText, onSubmit, submitButtonText, errorMessage}) => {
+const AuthForm = ({headerText, onSubmit, submitButtonText, errorMessage, message}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,6 +26,8 @@ const AuthForm = ({headerText, onSubmit, submitButtonText, errorMessage}) => {
         autoCapitalize="none"
         onChangeText={setPassword}
       />
+
+      {message ? alert(message) : null}
 
       {/* error message */}
       {errorMessage ? <Error message={errorMessage} /> : null}

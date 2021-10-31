@@ -11,7 +11,7 @@ const authReducer = (state, action) => {
     case 'signin':
       return {errorMessage: '', token: action.payload, isLoading: false};
     case 'clear_error_message':
-      return {...state, errorMessage: ''};
+      return {...state, errorMessage: '', message: ''};
     case 'signout':
       return {token: null, errorMessage: '', isLoading: false};
     case 'is_loading':
@@ -22,6 +22,8 @@ const authReducer = (state, action) => {
       return {errorMessage: '', isLoading: false};
     case 'change_password':
       return {errorMessage: '', isLoading: false};
+    case 'alert':
+      return {errorMessage: '', message: action.payload, isLoading: false};
     default:
       return state;
   }
@@ -54,10 +56,11 @@ const signup = dispatch => async ({ email, password }) => {
           password,
         },
       });
-      await AsyncStorage.setItem('token', response.data.token);
-      dispatch({type: 'signin', payload: response.data.token});
-      //   if sign up complete then navigate to Main Flow(create note screen)
-      RootNavigation.navigate('Main Flow');
+      //await AsyncStorage.setItem('token', response.data.token);
+      //dispatch({type: 'signin', payload: response.data.token});
+      dispatch({type: 'alert', payload: 'check your emails and login'});
+      //   if sign up complete then navigate to Sing In screen(create note screen)
+      RootNavigation.navigate('Sing In');
     } catch (err) {
       dispatch({
         type: 'add_error',
