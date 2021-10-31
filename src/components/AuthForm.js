@@ -2,10 +2,33 @@ import React, {useState} from 'react';
 import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
+import {useValidation} from 'react-native-form-validator';
 
-const AuthForm = ({headerText, onSubmit, submitButtonText, errorMessage, message}) => {
+const AuthForm = ({
+  headerText,
+  onSubmit,
+  submitButtonText,
+  errorMessage,
+  message,
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const {validate, isFieldInError, getErrorsInField, getErrorMessages} =
+    useValidation({
+      state: {email, password},
+    });
+
+  const _onPressButton = () => {
+    validate({
+      password: {
+        minlength: 6,
+        maxlength: 20,
+        required: true,
+      },
+      email: {email: true, required: true},
+    });
+  };
 
   return (
     <>
@@ -16,25 +39,50 @@ const AuthForm = ({headerText, onSubmit, submitButtonText, errorMessage, message
         value={email}
         autoCorrect={false}
         autoCapitalize="none"
-        onChangeText={setEmail}
+        onChangeText={value => {
+          setEmail(value);
+          _onPressButton();
+        }}
       />
+
+      {isFieldInError('email') &&
+        getErrorsInField('email').map((errorMessage, index) => (
+          <Text key={index}>{errorMessage}</Text>
+        ))}
+
       <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         autoCorrect={false}
         autoCapitalize="none"
-        onChangeText={setPassword}
+        onChangeText={value => {
+          setPassword(value);
+          _onPressButton();
+        }}
       />
+
+      {isFieldInError('password') &&
+        getErrorsInField('password').map((errorMessage, index) => (
+          <Text key={index}>{errorMessage}</Text>
+        ))}
 
       {message ? alert(message) : null}
 
       {/* error message */}
       {errorMessage ? <Error message={errorMessage} /> : null}
 
+      {/* <Text>{getErrorMessages()}</Text> */}
+
       {/* sign up and sign in button */}
       <View>
-        <EasyButton large primary onPress={() => onSubmit({email, password})}>
+        <EasyButton
+          large
+          primary
+          onPress={() => {
+            _onPressButton();
+            onSubmit({email, password});
+          }}>
           <Text style={{color: 'white'}}>{submitButtonText}</Text>
         </EasyButton>
       </View>
