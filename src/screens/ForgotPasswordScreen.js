@@ -22,6 +22,8 @@ const ForgotPasswordScreen = ({navigation}) => {
     return unsubscribe;
   }, []);
 
+  //console.log(state.message);
+
   return (
     <KeyboardAwareScrollView>
       <Spinner visible={state.isLoading} />
@@ -30,6 +32,8 @@ const ForgotPasswordScreen = ({navigation}) => {
         <Text style={styles.title}>Enter Your Email</Text>
 
         {state.errorMessage ? <Error message={state.errorMessage} /> : null}
+
+        {state.message ? alert(state.message) : null}
 
         <Input
           placeholder={'Enter Email'}
@@ -42,7 +46,7 @@ const ForgotPasswordScreen = ({navigation}) => {
           <EasyButton large primary onPress={() => forgotPassword({email})}>
             <Text style={{color: 'white'}}>Send</Text>
           </EasyButton>
-        </View>
+        </View>        
 
       </View>
     </KeyboardAwareScrollView>

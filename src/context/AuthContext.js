@@ -125,7 +125,8 @@ const forgotPassword = dispatch => async ({ email }) => {
           email,
         },
       });
-      dispatch({type: 'forgot_password'});
+      //dispatch({type: 'forgot_password'});
+      dispatch({type: 'alert', payload: 'check your emails'});
 
       RootNavigation.navigate('Password Reset');
     } catch (err) {
@@ -152,7 +153,8 @@ const resetPassword = dispatch => async ({ secretKey, password }) => {
           password,
         },
       });
-      dispatch({type: 'forgot_password'});
+      //dispatch({type: 'forgot_password'});
+      dispatch({type: 'alert', payload: 'Success rest password'});
 
       RootNavigation.navigate('Sing In');
     } catch (err) {

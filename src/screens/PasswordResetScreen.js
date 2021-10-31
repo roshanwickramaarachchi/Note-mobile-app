@@ -32,6 +32,8 @@ const PasswordResetScreen = ({navigation}) => {
 
         {state.errorMessage ? <Error message={state.errorMessage} /> : null}
 
+        {state.message ? alert(state.message) : null}
+
         <Text>Please check your emails </Text>
 
         <Input
