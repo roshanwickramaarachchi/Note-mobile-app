@@ -14,7 +14,6 @@ const AuthForm = ({
   const [password, setPassword] = useState('');
   const [isValidatePassword, setIsValidatePassword] = useState(true);
   const [emailValidError, setEmailValidError] = useState('');
-  
 
   const handleValidEmail = val => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
@@ -48,18 +47,12 @@ const AuthForm = ({
         onChangeText={value => {
           setEmail(value);
           handleValidEmail(value);
-          //_onPressButton();
         }}
       />
 
       {emailValidError ? (
         <Text style={styles.text}>{emailValidError}</Text>
       ) : null}
-
-      {/* {isFieldInError('email') &&
-        getErrorsInField('email').map((errorMessage, index) => (
-          <Text key={index}>{errorMessage}</Text>
-        ))} */}
 
       <TextInput
         style={styles.input}
@@ -72,7 +65,6 @@ const AuthForm = ({
           handleValidPassword(value);
         }}
       />
-
 
       {isValidatePassword ? null : (
         <Text style={styles.text}>
@@ -93,7 +85,6 @@ const AuthForm = ({
           large
           primary
           onPress={() => {
-            _onPressButton();
             onSubmit({email, password});
           }}>
           <Text style={{color: 'white'}}>{submitButtonText}</Text>
