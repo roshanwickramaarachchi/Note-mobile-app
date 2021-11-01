@@ -14,15 +14,35 @@ const NoteForm = ({
   const [name, setName] = useState(noteData.name);
   const [content, setContent] = useState(noteData.content);
   const [noteId, setNoteId] = useState(noteData._id);
+  const [titleValidError, setTitleValidError] = useState('');
+  const [contentValidError, setContentValidError] = useState('');
 
   //when load screen remove input fields
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
-      setContent('');
-      setName('');
-    });
-    return unsubscribe;
-  }, []);
+  if (headerText === 'Note Create') {
+    useEffect(() => {
+      const unsubscribe = navigation.addListener('blur', () => {
+        setContent('');
+        setName('');
+      });
+      return unsubscribe;
+    }, []);
+  }
+
+  const handleValidtitle = val => {
+    if (val.length === 0) {
+      setTitleValidError('title must be atleast one cherecter');
+    } else {
+      setTitleValidError('');
+    }
+  };
+
+  const handleValidContent = val => {
+    if (val.length === 0) {
+      setContentValidError('content must be atleast one cherecter');
+    } else {
+      setContentValidError('');
+    }
+  };
 
   return (
     <>
@@ -33,18 +53,33 @@ const NoteForm = ({
 
       <TextInput
         style={styles.titleInput}
-        placeholder="Title"
+        placeholder="Title- you can not use same name twice"
         value={name}
-        onChangeText={setName}
+        onChangeText={value => {
+          setName(value);
+          handleValidtitle(value);
+        }}
       />
+
+      {titleValidError ? (
+        <Text style={styles.text}>{titleValidError}</Text>
+      ) : null}
+
       <TextInput
         style={styles.contentInput}
         placeholder="Content"
         value={content}
-        onChangeText={setContent}
+        onChangeText={value => {
+          setContent(value);
+          handleValidContent(value);
+        }}
         multiline
         textAlignVertical="top"
       />
+
+      {contentValidError ? (
+        <Text style={styles.text}>{contentValidError}</Text>
+      ) : null}
 
       {onSubmit ? (
         <View>
@@ -96,6 +131,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
+  },
+  text: {
+    color: 'red',
   },
 });
 
