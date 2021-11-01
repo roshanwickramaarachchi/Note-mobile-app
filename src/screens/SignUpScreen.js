@@ -1,15 +1,23 @@
 import React, {useContext, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Dimensions,
+  BackHandler,
+} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import AuthForm from '../components/AuthForm'; 
+import AuthForm from '../components/AuthForm';
 import {Context as AuthContext} from '../context/AuthContext';
 import EasyButton from '../components/EasyButton';
+import {useFocusEffect} from '@react-navigation/native';
 
 var {width} = Dimensions.get('window');
 
 const SignUpScreen = ({navigation}) => {
   const {state, signup, clearErrorMessage} = useContext(AuthContext);
-  
+
   // when the screen goes out of focus, error message will hide
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
@@ -18,6 +26,18 @@ const SignUpScreen = ({navigation}) => {
     return unsubscribe;
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
   return (
     <KeyboardAwareScrollView>

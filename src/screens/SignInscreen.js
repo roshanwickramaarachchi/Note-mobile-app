@@ -1,11 +1,19 @@
 import React, {useContext, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Dimensions,
+  BackHandler,
+} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AuthForm from '../components/AuthForm';
 import {Context as AuthContext} from '../context/AuthContext';
 import EasyButton from '../components/EasyButton';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NavLink from '../components/NavLink';
+import {useFocusEffect} from '@react-navigation/native';
 
 var {width} = Dimensions.get('window');
 
@@ -19,6 +27,19 @@ const SignInScreen = ({navigation}) => {
     });
     return unsubscribe;
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
   return (
     <KeyboardAwareScrollView>

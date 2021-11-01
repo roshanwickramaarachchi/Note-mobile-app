@@ -1,10 +1,18 @@
 import React, {useContext, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Dimensions,
+  BackHandler,
+} from 'react-native';
 import {Context} from '../context/NoteContext';
 import {ListItem, Avatar, Icon} from 'react-native-elements';
 import Error from '../components/Error';
 import Spinner from 'react-native-loading-spinner-overlay';
 var {width} = Dimensions.get('window');
+import {useFocusEffect} from '@react-navigation/native';
 
 const NoteListScreen = ({navigation}) => {
   const {state, getNotes, deleteNote, clearErrorMessage} = useContext(Context);
@@ -23,6 +31,27 @@ const NoteListScreen = ({navigation}) => {
     });
     return listener;
   }, [navigation]);
+
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     () => true,
+  //   );
+  //   return () => backHandler.remove();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
   return (
     <>
