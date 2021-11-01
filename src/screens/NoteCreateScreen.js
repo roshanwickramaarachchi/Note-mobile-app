@@ -25,6 +25,7 @@ const NoteCreateScreen = ({navigation}) => {
           headerText="Note Create"
           errorMessage={state.errorMessage}
           onSubmit={createNote}
+          navigation={navigation}
         />
       </ScrollView>
     </KeyboardAwareScrollView>

@@ -50,6 +50,7 @@ const SignInScreen = ({navigation}) => {
           errorMessage={state.errorMessage}
           submitButtonText="Sign In"
           onSubmit={signin}
+          navigation={navigation}
         />
 
         <View>

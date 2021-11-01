@@ -1,12 +1,28 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
 
-const NoteForm = ({headerText, onSubmit, onUpdate, errorMessage, noteData}) => {
+const NoteForm = ({
+  headerText,
+  onSubmit,
+  onUpdate,
+  errorMessage,
+  noteData,
+  navigation,
+}) => {
   const [name, setName] = useState(noteData.name);
   const [content, setContent] = useState(noteData.content);
   const [noteId, setNoteId] = useState(noteData._id);
+
+  //when load screen remove input fields
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      setContent('');
+      setName('');
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <>

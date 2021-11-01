@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
@@ -9,11 +9,21 @@ const AuthForm = ({
   submitButtonText,
   errorMessage,
   message,
+  navigation,
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isValidatePassword, setIsValidatePassword] = useState(true);
   const [emailValidError, setEmailValidError] = useState('');
+  
+  //when load screen remove input fields
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      setEmail('');
+      setPassword('');
+    });
+    return unsubscribe;
+  }, []);
 
   const handleValidEmail = val => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
@@ -64,6 +74,7 @@ const AuthForm = ({
           setPassword(value);
           handleValidPassword(value);
         }}
+        secureTextEntry={true}
       />
 
       {isValidatePassword ? null : (

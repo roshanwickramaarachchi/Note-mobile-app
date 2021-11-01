@@ -48,6 +48,7 @@ const SignUpScreen = ({navigation}) => {
           submitButtonText="Sign Up"
           onSubmit={signup}
           message={state.message}
+          navigation={navigation}
         />
 
         <View>
