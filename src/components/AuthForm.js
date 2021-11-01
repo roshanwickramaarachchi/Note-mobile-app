@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {StyleSheet, TextInput, Button, Text, View} from 'react-native';
 import EasyButton from './EasyButton';
 import Error from './Error';
-import {useValidation} from 'react-native-form-validator';
 
 const AuthForm = ({
   headerText,
@@ -15,22 +14,7 @@ const AuthForm = ({
   const [password, setPassword] = useState('');
   const [isValidatePassword, setIsValidatePassword] = useState(true);
   const [emailValidError, setEmailValidError] = useState('');
-
-  const {validate, isFieldInError, getErrorsInField, getErrorMessages} =
-    useValidation({
-      state: {email, password},
-    });
-
-  const _onPressButton = () => {
-    validate({
-      password: {
-        minlength: 6,
-        maxlength: 20,
-        required: true,
-      },
-      email: {email: true, required: true},
-    });
-  };
+  
 
   const handleValidEmail = val => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
