@@ -13,6 +13,8 @@ const AuthForm = ({
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isValidatePassword, setIsValidatePassword] = useState(true);
+  const [emailValidError, setEmailValidError] = useState('');
 
   const {validate, isFieldInError, getErrorsInField, getErrorMessages} =
     useValidation({
@@ -30,6 +32,26 @@ const AuthForm = ({
     });
   };
 
+  const handleValidEmail = val => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (val.length === 0) {
+      setEmailValidError('email address must be enter');
+    } else if (reg.test(val) === false) {
+      setEmailValidError('enter valid email address');
+    } else if (reg.test(val) === true) {
+      setEmailValidError('');
+    }
+  };
+
+  const handleValidPassword = val => {
+    if (val.length >= 6) {
+      setIsValidatePassword(true);
+    } else {
+      setIsValidatePassword(false);
+    }
+  };
+
   return (
     <>
       <Text style={styles.title}>{headerText}</Text>
@@ -41,14 +63,19 @@ const AuthForm = ({
         autoCapitalize="none"
         onChangeText={value => {
           setEmail(value);
-          _onPressButton();
+          handleValidEmail(value);
+          //_onPressButton();
         }}
       />
 
-      {isFieldInError('email') &&
+      {emailValidError ? (
+        <Text style={styles.text}>{emailValidError}</Text>
+      ) : null}
+
+      {/* {isFieldInError('email') &&
         getErrorsInField('email').map((errorMessage, index) => (
           <Text key={index}>{errorMessage}</Text>
-        ))}
+        ))} */}
 
       <TextInput
         style={styles.input}
@@ -58,14 +85,16 @@ const AuthForm = ({
         autoCapitalize="none"
         onChangeText={value => {
           setPassword(value);
-          _onPressButton();
+          handleValidPassword(value);
         }}
       />
 
-      {isFieldInError('password') &&
-        getErrorsInField('password').map((errorMessage, index) => (
-          <Text key={index}>{errorMessage}</Text>
-        ))}
+
+      {isValidatePassword ? null : (
+        <Text style={styles.text}>
+          password must be atleast 6 cheracter long.
+        </Text>
+      )}
 
       {message ? alert(message) : null}
 
@@ -103,6 +132,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
+  },
+  text: {
+    color: 'red',
   },
 });
 
